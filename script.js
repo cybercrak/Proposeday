@@ -68,6 +68,9 @@ function createHeart() {
             smallHeart.style.animation = 'popIn 0.3s ease';
             heartsCollected.appendChild(smallHeart);
             
+            // spawn a floating heart inside the love meter
+            spawnMeterHeart();
+
             updateLoveMeter();
             
             // Add caught animation
@@ -93,6 +96,22 @@ function createHeart() {
     }, (duration + 1) * 1000);
 }
 
+// spawn a small floating heart inside the love meter to celebrate a catch
+function spawnMeterHeart() {
+    const meter = document.getElementById('loveMeterFill');
+    if (!meter) return;
+    const h = document.createElement('div');
+    h.className = 'meter-heart';
+    h.textContent = ['💖','💕','💗'][Math.floor(Math.random()*3)];
+    // position it random along the filled width
+    const filled = parseFloat(meter.style.width) || 0;
+    const meterWidth = meter.clientWidth || 100;
+    const leftPercent = Math.min(90, Math.max(10, filled - 10 + (Math.random()*20 - 10)));
+    h.style.left = leftPercent + '%';
+    meter.appendChild(h);
+    setTimeout(() => h.remove(), 1000);
+}
+
 // Update love meter
 function updateLoveMeter() {
     const percentage = (heartsCaught / maxHearts) * 100;
@@ -100,8 +119,12 @@ function updateLoveMeter() {
     heartCountDisplay.textContent = `Hearts Caught: ${heartsCaught} / ${maxHearts}`;
     
     // Check if love meter is full
-    if (heartsCaught >= maxHearts) {
+    // add glowing "complete" style when full
+    if (percentage >= 100) {
+        loveMeterFill.classList.add('complete');
         showProposalScreen();
+    } else {
+        loveMeterFill.classList.remove('complete');
     }
 }
 
