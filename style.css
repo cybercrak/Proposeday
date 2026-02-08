@@ -1,0 +1,464 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ffa502 100%);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Game Screen */
+#gameScreen {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(255, 107, 157, 0.9) 0%, rgba(196, 69, 105, 0.9) 100%);
+    position: relative;
+}
+
+.header {
+    text-align: center;
+    color: white;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header p {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+.love-meter-container {
+    position: absolute;
+    top: 150px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    min-width: 250px;
+    z-index: 20;
+}
+
+.love-meter-container h2 {
+    color: #ff6b9d;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.love-meter {
+    width: 100%;
+    height: 30px;
+    background: #eee;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px solid #ff6b9d;
+    margin-bottom: 10px;
+}
+
+.love-meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff6b9d, #ff1493);
+    transition: width 0.3s ease;
+    border-radius: 15px;
+}
+
+#heartCount {
+    color: #666;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.game-area {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+/* Catcher Basket */
+.basket {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 30;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+}
+
+.panda-hug {
+    font-size: 5em;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+    animation: pandaHold 2s ease-in-out infinite;
+    position: relative;
+    z-index: 20;
+    order: 1;
+}
+
+@keyframes pandaHold {
+    0%, 100% {
+        transform: scaleX(1);
+    }
+    50% {
+        transform: scaleX(1.05);
+    }
+}
+
+.basket-wrapper {
+    display: none;
+}
+
+.basket-top {
+    font-size: 2em;
+    filter: drop-shadow(0 0 15px rgba(255, 107, 157, 0.8));
+    margin-top: -20px;
+    margin-bottom: 0;
+    z-index: 26;
+    order: 2;
+}
+
+.basket-inside {
+    width: 200px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.9), rgba(255, 105, 180, 0.9));
+    border-radius: 20px;
+    border: 2px solid #ff69b4;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(255, 107, 157, 0.5);
+    margin-top: 0px;
+    order: 3;
+}
+
+.hearts-collected {
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3px;
+    padding: 5px;
+    min-width: 100%;
+}
+
+/* Hearts */
+.heart {
+    position: absolute;
+    font-size: 2em;
+    cursor: grab;
+    animation: fall linear;
+    animation-duration: 4s;
+    filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.6));
+}
+
+.heart:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 15px rgba(255, 107, 157, 1)) brightness(1.1);
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes popOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.heart.caught {
+    animation: popOut 0.5s ease-out;
+}
+
+/* Proposal Screen */
+#proposalScreen {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: none;
+}
+
+#proposalScreen.active {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.proposal-container {
+    text-align: center;
+    animation: slideIn 1s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ring-animation {
+    font-size: 8em;
+    margin-bottom: 30px;
+    animation: ringPulse 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+}
+
+@keyframes ringPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+.proposal-text {
+    font-size: 3.5em;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: textGlow 2s ease-in-out infinite;
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.love-text {
+    font-size: 2.5em;
+    color: #ffb6c1;
+    margin-bottom: 50px;
+    font-style: italic;
+    animation: fadeInOut 2s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.letter-btn {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    background: linear-gradient(135deg, #ff6b9d, #ff1493);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+
+.letter-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+}
+
+.letter-btn:active {
+    transform: scale(0.95);
+}
+
+/* Modal/Dialog */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #fff5f7 0%, #ffe4e9 100%);
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.4s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.close {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff6b9d;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #ff1493;
+}
+
+.modal-content h2 {
+    color: #ff6b9d;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.quote-container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 0;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 2px solid #ffb6c1;
+    box-shadow: inset 0 2px 8px rgba(255, 107, 157, 0.1);
+}
+
+.quote-text {
+    font-size: 1.1em;
+    color: #333;
+    text-align: center;
+    margin: 15px 0;
+    padding: 15px;
+    font-style: italic;
+    line-height: 1.6;
+    border-bottom: 1px solid #ffb6c1;
+}
+
+.quote-text:last-child {
+    border-bottom: none;
+}
+
+.signature-text {
+    font-size: 1em;
+    color: #ff6b9d;
+    text-align: right;
+    margin: 0;
+    padding: 0 15px 0 0;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .love-meter-container {
+        position: static;
+        margin: 20px;
+        transform: none;
+    }
+
+    .proposal-text {
+        font-size: 2.2em;
+    }
+
+    .ring-animation {
+        font-size: 5em;
+    }
+
+    .love-text {
+        font-size: 1.5em;
+    }
+
+    .modal-content {
+        padding: 25px;
+    }
+}

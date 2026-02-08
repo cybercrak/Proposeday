@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propose Day - Catch The Hearts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="screen active">
+        <div class="header">
+            <h1>Catch the Hearts 💝</h1>
+            <p>Move your cursor to catch the hearts falling from the sky</p>
+        </div>
+
+        <div class="love-meter-container">
+            <h2>Love Meter</h2>
+            <div class="love-meter">
+                <div id="loveMeterFill" class="love-meter-fill"></div>
+            </div>
+            <p id="heartCount">Hearts Caught: 0 / 10</p>
+        </div>
+
+        <div id="gameArea" class="game-area"></div>
+
+        <div id="basket" class="basket">
+            <div class="panda-hug">🐼</div>
+            <div class="basket-top">🧺</div>
+            <div class="basket-inside">
+                <div class="hearts-collected"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proposal Screen -->
+    <div id="proposalScreen" class="screen">
+        <div class="proposal-container">
+            <div class="ring-animation">
+                💍
+            </div>
+            <h1 class="proposal-text">Happy Propose Day</h1>
+            <p class="love-text">I Love You</p>
+            
+            <button id="letterBtn" class="letter-btn">💌 Open My Letter</button>
+        </div>
+    </div>
+
+    <!-- Love Letter Dialog -->
+    <div id="letterDialog" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>A Love Letter For You</h2>
+            <div id="quoteContainer" class="quote-container">
+                <!-- Quotes will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
